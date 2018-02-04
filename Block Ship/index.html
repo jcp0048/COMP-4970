@@ -23,13 +23,13 @@
     <canvas id="myCanvas" width="480" height="320"></canvas>
     <script>
         var score = 0;
-        var lives = 3;
+        var missiles = 5;
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
         var shipHeight = 30;
         var shipWidth = 30;
-        var missileHeight = 40;
-        var missileWidth = 10;
+        var missileHeight = 20;
+        var missileWidth = 5;
         var shipX = (canvas.width - shipWidth) / 2;
         var missileX = (canvas.width - missileWidth) / 2;
         var x = canvas.width / 2;
@@ -39,6 +39,14 @@
         var spacePressed = false;
         var rightPressed = false;
         var leftPressed = false;
+        var greyHit = false;
+        var greenHit = false;
+        var purpleHit = false;
+        var yellowHit = false;
+        var orangeHit = false;
+        var count = 10000;
+        var showColor = 0;
+        var colorHit = "";
 
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
@@ -84,56 +92,240 @@
             ctx.fillText("Score: " + score, 8, 20);
         }
 
-        function drawLives() {
+        function drawAmmo() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
-            ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+            ctx.fillText("Missiles: " + missiles, canvas.width - 85, 20);
         }
 
-        // function startGame() {
-        //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //     ctx.beginPath()
-        //     ctx.rect(0, 0, 480, 320);
-        //     ctx.fillStyle = "#000000";
-        //     ctx.fill();
-        //     ctx.closePath();
+        function drawGreyBlock() {
+            if (greyHit == false) {
+                ctx.beginPath();
+                ctx.rect(30, 50, 50, 50);
+                ctx.fillStyle = "grey";
+                ctx.fill();
+                ctx.closePath();
 
-        //     ctx.beginPath()
-        //     ctx.rect(160, 130, 160, 30);
-        //     ctx.fillStyle = "#0095DD";
-        //     ctx.fill();
-        //     ctx.closePath();
+                if (missileX <= 80) {
+                    if (y + dy <= 100) {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        spacePressed = false;
+                        shipX = (canvas.width - shipWidth) / 2;
+                        missileX = (canvas.width - missileWidth) / 2;
+                        drawShip()
+                        drawMissile()
+                        greyHit = true;
+                        score += 10;
+                        showColor = 1;
+                    }
+                }
+            }
+        }
 
-        //     ctx.font = "16px Arial";
-        //     ctx.fillStyle = "#000000";
-        //     ctx.fillText("Press Enter to Start", 170, 150);
-        // }
+        function drawGreenBlock() {
+            if (greenHit == false) {
+                ctx.beginPath();
+                ctx.rect(110, 50, 50, 50);
+                ctx.fillStyle = "green";
+                ctx.fill();
+                ctx.closePath();
+
+                if (missileX >= 110 && missileX <= 160) {
+                    if (y + dy <= 100) {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        spacePressed = false;
+                        shipX = (canvas.width - shipWidth) / 2;
+                        missileX = (canvas.width - missileWidth) / 2;
+                        drawShip()
+                        drawMissile()
+                        greenHit = true;
+                        score += 10;
+                        showColor = 2;
+                    }
+                }
+            }
+        }
+
+        function drawPurpleBlock() {
+            if (purpleHit == false) {
+                ctx.beginPath();
+                ctx.rect(190, 50, 50, 50);
+                ctx.fillStyle = "purple";
+                ctx.fill();
+                ctx.closePath();
+
+                if (missileX >= 190 && missileX <= 240) {
+                    if (y + dy <= 100) {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        spacePressed = false;
+                        shipX = (canvas.width - shipWidth) / 2;
+                        missileX = (canvas.width - missileWidth) / 2;
+                        drawShip()
+                        drawMissile()
+                        purpleHit = true;
+                        score += 10;
+                        showColor = 3;
+                    }
+                }
+            }
+        }
+
+        function drawYellowBlock() {
+            if (yellowHit == false) {
+                ctx.beginPath();
+                ctx.rect(270, 50, 50, 50);
+                ctx.fillStyle = "yellow";
+                ctx.fill();
+                ctx.closePath();
+
+                if (missileX >= 270 && missileX <= 320) {
+                    if (y + dy <= 100) {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        spacePressed = false;
+                        shipX = (canvas.width - shipWidth) / 2;
+                        missileX = (canvas.width - missileWidth) / 2;
+                        drawShip()
+                        drawMissile()
+                        yellowHit = true;
+                        score += 10;
+                        showColor = 4;
+                    }
+                }
+            }
+        }
+
+        function drawOrangeBlock() {
+            if (orangeHit == false) {
+                ctx.beginPath();
+                ctx.rect(350, 50, 50, 50);
+                ctx.fillStyle = "orange";
+                ctx.fill();
+                ctx.closePath();
+
+                if (missileX >= 350 && missileX <= 400) {
+                    if (y + dy <= 100) {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        spacePressed = false;
+                        shipX = (canvas.width - shipWidth) / 2;
+                        missileX = (canvas.width - missileWidth) / 2;
+                        drawShip()
+                        drawMissile()
+                        orangeHit = true;
+                        score += 10;
+                        showColor = 5;
+                    }
+                }
+            }
+        }
+
+        function youWin() {
+            if (score == 50 && showColor == 0) {
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "#0095DD";
+                ctx.fillText("YOU LEARNED ALL THE COLORS!", 110, 150);
+                count -= 100;
+                alert("YOU WIN, CONGRATULATIONS!");
+                document.location.reload();
+            }
+        }
+
+        function youLose() {
+            if (missiles == 0) {
+                alert("YOU LOSE, Try Again!");
+                document.location.reload();
+            }
+        }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawScore()
-            drawLives()
+            drawAmmo()
             drawMissile()
             drawShip()
+            drawGreyBlock()
+            drawGreenBlock()
+            drawPurpleBlock()
+            drawYellowBlock()
+            drawOrangeBlock()
+            youWin()
+            youLose()
+            var stopMoving = false;
 
+            if (count == 0) {
+                showColor = 0;
+                count = 5000;
+            }
+
+            if (showColor == 1 && count != 0) {
+                colorHit = "GREY";
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "grey";
+                ctx.fillText("You Hit The " + colorHit + " Box!", 130, 20);
+                count -= 100;
+            }
+
+            if (showColor == 2 && count != 0) {
+                colorHit = "GREEN";
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "green";
+                ctx.fillText("You Hit The " + colorHit + " Box!", 130, 20);
+                count -= 100;
+            }
+
+            if (showColor == 3 && count != 0) {
+                colorHit = "PURPLE";
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "purple";
+                ctx.fillText("You Hit The " + colorHit + " Box!", 130, 20);
+                count -= 100;
+            }
+
+            if (showColor == 4 && count != 0) {
+                colorHit = "YELLOW";
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "yellow";
+                ctx.fillText("You Hit The " + colorHit + " Box!", 130, 20);
+                count -= 100;
+            }
+
+            if (showColor == 5 && count != 0) {
+                colorHit = "ORANGE";
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "orange";
+                ctx.fillText("You Hit The " + colorHit + " Box!", 130, 20);
+                count -= 100;
+            }
+
+            //shooting the missile
             if (spacePressed == true) {
-                x += dx;
+                stopMoving = true;
                 y += dy;
             }
 
+            //reset missile and ship
             if (y + dy < 0) {
                 x = canvas.width / 2;
                 y = canvas.height - 30;
                 spacePressed = false;
+                shipX = (canvas.width - shipWidth) / 2;
+                missileX = (canvas.width - missileWidth) / 2;
+                missiles -= 1;
+                drawShip()
                 drawMissile()
-
             }
-
-            //draw missile
-            if (rightPressed && missileX < canvas.width - missileWidth) {
-                missileX += 7;
-            } else if (leftPressed && missileX > 0) {
-                missileX -= 7;
+            //make missile stop moving left and right
+            if (stopMoving == false) {
+                //moving missile with ship
+                if (rightPressed && missileX < canvas.width - missileWidth) {
+                    missileX += 7;
+                } else if (leftPressed && missileX > 0) {
+                    missileX -= 7;
+                }
             }
 
             //move ship
@@ -143,9 +335,9 @@
                 shipX -= 7;
             }
 
-
+            requestAnimationFrame(draw);
         }
-        setInterval(draw, 10);
+        draw();
     </script>
 
 </body>
