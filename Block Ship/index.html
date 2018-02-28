@@ -23,7 +23,7 @@
     <canvas id="myCanvas" width="480" height="320"></canvas>
     <script>
         var score = 0;
-        var missiles = 5;
+        var missiles = 3;
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
         var shipHeight = 30;
@@ -47,6 +47,9 @@
         var count = 10000;
         var showColor = 0;
         var colorHit = "";
+        var audio1 = new Audio('galaga.mp3');
+        var audio2 = new Audio('galaga_bonus.mp3');
+        var audio3 = new Audio('galaga_nes_sms.mp3');
 
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
@@ -56,7 +59,9 @@
                 rightPressed = true;
             }
             if (e.keyCode == 32) {
+                audio3.play()
                 spacePressed = true;
+
             } else if (e.keyCode == 37) {
                 leftPressed = true;
             }
@@ -111,6 +116,7 @@
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         spacePressed = false;
+                        audio3.pause()
                         shipX = (canvas.width - shipWidth) / 2;
                         missileX = (canvas.width - missileWidth) / 2;
                         drawShip()
@@ -136,6 +142,7 @@
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         spacePressed = false;
+                        audio3.pause()
                         shipX = (canvas.width - shipWidth) / 2;
                         missileX = (canvas.width - missileWidth) / 2;
                         drawShip()
@@ -161,6 +168,7 @@
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         spacePressed = false;
+                        audio3.pause()
                         shipX = (canvas.width - shipWidth) / 2;
                         missileX = (canvas.width - missileWidth) / 2;
                         drawShip()
@@ -186,6 +194,7 @@
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         spacePressed = false;
+                        audio3.pause()
                         shipX = (canvas.width - shipWidth) / 2;
                         missileX = (canvas.width - missileWidth) / 2;
                         drawShip()
@@ -211,6 +220,7 @@
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         spacePressed = false;
+                        audio3.pause()
                         shipX = (canvas.width - shipWidth) / 2;
                         missileX = (canvas.width - missileWidth) / 2;
                         drawShip()
@@ -225,10 +235,12 @@
 
         function youWin() {
             if (score == 50 && showColor == 0) {
+                audio2.play()
                 ctx.font = "16px Arial";
                 ctx.fillStyle = "#0095DD";
                 ctx.fillText("YOU LEARNED ALL THE COLORS!", 110, 150);
                 count -= 100;
+                audio2.play()
                 alert("YOU WIN, CONGRATULATIONS!");
                 document.location.reload();
             }
@@ -255,6 +267,7 @@
             youWin()
             youLose()
             var stopMoving = false;
+            audio1.play();
 
             if (count == 0) {
                 showColor = 0;
@@ -322,17 +335,17 @@
             if (stopMoving == false) {
                 //moving missile with ship
                 if (rightPressed && missileX < canvas.width - missileWidth) {
-                    missileX += 7;
+                    missileX += 8;
                 } else if (leftPressed && missileX > 0) {
-                    missileX -= 7;
+                    missileX -= 8;
                 }
             }
 
             //move ship
             if (rightPressed && shipX < canvas.width - shipWidth) {
-                shipX += 7;
+                shipX += 8;
             } else if (leftPressed && shipX > 0) {
-                shipX -= 7;
+                shipX -= 8;
             }
 
             requestAnimationFrame(draw);
